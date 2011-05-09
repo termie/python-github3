@@ -4,6 +4,13 @@ import urllib
 import urllib2
 
 
+def basic_auth(username, password):
+  b64_userpass = base64.b64encode(
+      '%s:%s' % (username, password))
+  b64_userpass = b64_userpass.replace('\n', '')
+  return b64_userpass
+
+
 class Request(object):
   def __init__(self, username=None, password=None, oauth_token=None):
     self._username = username
@@ -15,9 +22,7 @@ class Request(object):
     if self._oauth_token:
       req.add_header('Authorization', 'token %s' % self._oauth_token)
     elif self._username is not None and self._password is not None:
-      b64_userpass = base64.b64encode(
-          '%s:%s' % (self._username, self._password))
-      b64_userpass = b64_userpass.replace('\n', '')
+      b64_userpass = basic_auth(self._username, self._password)
       req.add_header('Authorization', 'Basic %s' % b64_userpass)
     return req
 
