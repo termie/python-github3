@@ -24,7 +24,7 @@ class OpenerInterceptor(object):
   def raises(self, exc):
     self._raises = exc
 
-  def errors(self, body, url=None, headers=None, status=403):
+  def errors(self, body, url=None, headers=None, status=400):
     fp = StringIO.StringIO(body)
     exc = urllib2.HTTPError(url, status, msg, headers, fp)
 
